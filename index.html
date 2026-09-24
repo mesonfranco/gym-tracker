@@ -30,7 +30,7 @@
       --shadow-modal: rgba(0,0,0,0.8);
     }
 
-    body.light-theme {
+    html.light-theme, body.light-theme {
       --bg-color: #f8f9fa;
       --card-bg: #ffffff;
       --border-color: #e0e0e0;
@@ -47,24 +47,27 @@
       --btn-workout-text: #ffffff;
       --shadow-header: rgba(0,0,0,0.08);
       --shadow-modal: rgba(0,0,0,0.25);
+      background-color: #f8f9fa !important;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
+    html {
+      background-color: var(--bg-color);
+      min-height: 100vh;
+    }
+    body {
       overscroll-behavior-y: none;
       overscroll-behavior: none;
       background-color: var(--bg-color);
       color: var(--text-main);
       font-family: 'Roboto', sans-serif;
       transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    body {
+      min-height: 100vh;
       padding: 16px;
       padding-bottom: 90px;
       max-width: 500px;
       margin: 0 auto;
       user-select: none;
-      transition: padding-bottom 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     }
     body.rest-active {
       padding-bottom: 160px;
@@ -215,7 +218,7 @@
 
     .set-labels {
       display: grid;
-      grid-template-columns: 36px 1fr 1fr 44px;
+      grid-template-columns: 32px 1fr 1fr 40px;
       gap: 8px;
       margin: 10px 0 6px 0;
       font-size: 11px;
@@ -224,13 +227,21 @@
       text-transform: uppercase;
       text-align: center;
     }
+    .set-labels.has-delete {
+      grid-template-columns: 32px 1fr 1fr 40px 32px;
+    }
+
     .set-row {
       display: grid;
-      grid-template-columns: 36px 1fr 1fr 44px;
+      grid-template-columns: 32px 1fr 1fr 40px;
       gap: 8px;
       align-items: center;
       margin-bottom: 8px;
     }
+    .set-row.extra-set-row {
+      grid-template-columns: 32px 1fr 1fr 40px 32px;
+    }
+
     .set-num { font-size: 13px; font-weight: 700; color: var(--text-sub); text-align: center; }
     .input-field {
       background: var(--bg-color);
@@ -268,21 +279,90 @@
     }
     .btn-check.done { background: #386a20; color: #b5f296; }
 
-    /* Historial */
-    .swipe-container { position: relative; overflow: hidden; border-radius: 16px; margin-bottom: 12px; }
-    .swipe-bg {
-      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-      background: #8c1d18; color: #f2b8b5;
-      display: flex; align-items: center; justify-content: flex-end;
-      padding-right: 20px; border-radius: 16px; cursor: pointer;
+    .btn-delete-set {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: color 0.2s, background-color 0.2s;
     }
-    .swipe-content {
-      position: relative; background: var(--card-bg); border: 1px solid var(--border-color);
-      border-radius: 16px; padding: 16px; transition: transform 0.15s ease-out; touch-action: pan-y;
+    .btn-delete-set:hover {
+      color: #f2b8b5;
+      background-color: rgba(242, 184, 181, 0.15);
     }
-    .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+    .btn-add-set {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed var(--border-input);
+      color: var(--accent-blue);
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      transition: background 0.2s ease;
+    }
+    .btn-add-set:active { background: var(--bg-color); }
+
+    /* Historial Card */
+    .history-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .history-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
     .history-date { font-size: 15px; font-weight: 700; color: var(--accent-blue); }
-    .history-total-time { font-size: 11px; font-weight: 700; color: var(--accent-badge-text); background: var(--accent-badge-bg); padding: 3px 8px; border-radius: 6px; }
+    .history-total-time {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-badge-text);
+      background: var(--accent-badge-bg);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .history-action-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background-color 0.2s;
+    }
+    .history-action-btn:hover {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+    }
+    .history-action-btn.delete-btn:hover {
+      color: #f2b8b5;
+      background-color: rgba(242, 184, 181, 0.15);
+    }
     .history-day { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
     
     .history-ex-item {
@@ -364,7 +444,7 @@
       backdrop-filter: blur(4px);
     }
 
-    /* Modal Resumen */
+    /* Modales */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -423,6 +503,9 @@
     .btn-submit {
       width: 100%; background: var(--btn-workout-bg); color: var(--btn-workout-text); border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 8px;
     }
+    .btn-cancel {
+      width: 100%; background: transparent; color: var(--text-muted); border: 1px solid var(--border-input); padding: 10px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 8px;
+    }
     .empty-state { text-align: center; padding: 40px 20px; background: var(--card-bg); border-radius: 16px; border: 1px dashed var(--border-input); }
     .empty-state-icon { font-size: 48px; color: var(--accent-badge-bg); margin-bottom: 12px; }
     .empty-state-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
@@ -454,18 +537,13 @@
 
   <div id="view-progress" class="hidden-view">
     <div class="card">
-      <div class="exercise-title" style="margin-bottom: 6px;">Progreso de cargas</div>
-      <div class="exercise-subtitle">Selecciona un ejercicio para ver tus avances</div>
       <div class="form-group" style="margin-top: 14px;">
-        <label>Ejercicio</label>
+        <label> Selecciona un ejercicio para consultar el progreso.</label>
         <select id="progress-ex-select" class="form-control" onchange="renderProgressChart()">
           <option value="">Cargando ejercicios...</option>
         </select>
       </div>
       <div id="progress-chart-container" style="margin-top: 16px;">
-        <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px 0;">
-          Selecciona un ejercicio para consultar el progreso.
-        </div>
       </div>
     </div>
   </div>
@@ -542,6 +620,7 @@
     </div>
   </div>
 
+  <!-- Modal Resumen -->
   <div class="modal-overlay hidden" id="summary-modal">
     <div class="modal-card">
       <span class="material-symbols-outlined modal-icon">emoji_events</span>
@@ -564,6 +643,19 @@
       </div>
 
       <button class="btn-submit" onclick="closeSummaryModal()">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- Modal Editar Registro de Historial -->
+  <div class="modal-overlay hidden" id="edit-history-modal">
+    <div class="modal-card" style="text-align: left;">
+      <div class="modal-title" style="text-align: center;">Editar Registro</div>
+      <div class="modal-subtitle" id="edit-modal-subtitle" style="text-align: center;">Modifica repeticiones o peso</div>
+      
+      <div id="edit-modal-fields" style="max-height: 280px; overflow-y: auto; padding-right: 4px;"></div>
+
+      <button class="btn-submit" onclick="saveEditedRecord()">Guardar Cambios</button>
+      <button class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
     </div>
   </div>
 
@@ -606,12 +698,14 @@
 
   function applyTheme(isLight) {
     if (isLight) {
+      document.documentElement.classList.add('light-theme');
       document.body.classList.add('light-theme');
       themeIcon.textContent = 'dark_mode';
       themeToggleText.textContent = 'Oscuro';
       themeDesc.textContent = 'Modo Claro activado';
       themeColorMeta.setAttribute('content', '#f8f9fa');
     } else {
+      document.documentElement.classList.remove('light-theme');
       document.body.classList.remove('light-theme');
       themeIcon.textContent = 'light_mode';
       themeToggleText.textContent = 'Claro';
@@ -717,6 +811,7 @@
   let workoutTimerInterval = null;
   let workoutElapsedSeconds = 0;
   let isWorkoutActive = false;
+  let editingDate = null;
 
   const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
   const daySelector = document.getElementById('day-selector');
@@ -727,6 +822,7 @@
     btn.textContent = d;
     btn.id = `day-btn-${d}`;
     btn.onclick = () => {
+      saveCurrentFormState();
       selectedDay = d;
       document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -734,6 +830,45 @@
     };
     daySelector.appendChild(btn);
   });
+
+  function saveCurrentFormState() {
+    const inputs = document.querySelectorAll('#exercise-list input');
+    inputs.forEach(input => {
+      if (input.id) {
+        sessionStorage.setItem(`form_state_${input.id}`, input.value);
+      }
+    });
+
+    const buttons = document.querySelectorAll('#exercise-list .btn-check');
+    buttons.forEach(btn => {
+      if (btn.id) {
+        sessionStorage.setItem(`form_state_btn_${btn.id}`, btn.classList.contains('done') ? 'done' : '');
+      }
+    });
+  }
+
+  function restoreFormState() {
+    const inputs = document.querySelectorAll('#exercise-list input');
+    inputs.forEach(input => {
+      if (input.id) {
+        const savedVal = sessionStorage.getItem(`form_state_${input.id}`);
+        if (savedVal !== null) input.value = savedVal;
+        input.addEventListener('input', () => {
+          sessionStorage.setItem(`form_state_${input.id}`, input.value);
+        });
+      }
+    });
+
+    const buttons = document.querySelectorAll('#exercise-list .btn-check');
+    buttons.forEach(btn => {
+      if (btn.id) {
+        const savedState = sessionStorage.getItem(`form_state_btn_${btn.id}`);
+        if (savedState === 'done') {
+          btn.classList.add('done');
+        }
+      }
+    });
+  }
 
   // Cronómetro de entrenamiento
   const btnToggleWorkout = document.getElementById('btn-toggle-workout');
@@ -773,7 +908,6 @@
 
     const today = new Date().toISOString().split('T')[0];
 
-    // Guardar sesión en IndexedDB
     if (totalDuration > 0 && db) {
       const tx = db.transaction("sessions", "readwrite");
       tx.objectStore("sessions").add({
@@ -784,14 +918,21 @@
       });
     }
 
-    // Modal de resumen
     showWorkoutSummary(totalDuration, today);
 
-    // Reset timer
     workoutElapsedSeconds = 0;
     updateWorkoutTimerDisplay();
+    clearSessionState();
 
     renderExercises();
+  }
+
+  function clearSessionState() {
+    Object.keys(sessionStorage).forEach(key => {
+      if (key.startsWith('form_state_') || key.startsWith('extra_sets_')) {
+        sessionStorage.removeItem(key);
+      }
+    });
   }
 
   function updateWorkoutTimerDisplay() {
@@ -826,6 +967,7 @@
   }
 
   function switchTab(tab) {
+    saveCurrentFormState();
     document.getElementById('tab-routine-btn').classList.toggle('active', tab === 'routine');
     document.getElementById('tab-history-btn').classList.toggle('active', tab === 'history');
     document.getElementById('tab-progress-btn').classList.toggle('active', tab === 'progress');
@@ -840,6 +982,22 @@
 
     if (tab === 'history') loadHistory();
     if (tab === 'progress') populateProgressSelect();
+  }
+
+  function addExtraSet(exIdx) {
+    saveCurrentFormState();
+    const currentExtra = parseInt(sessionStorage.getItem(`extra_sets_${selectedDay}_${exIdx}`)) || 0;
+    sessionStorage.setItem(`extra_sets_${selectedDay}_${exIdx}`, currentExtra + 1);
+    renderExercises();
+  }
+
+  function removeExtraSet(exIdx) {
+    saveCurrentFormState();
+    const currentExtra = parseInt(sessionStorage.getItem(`extra_sets_${selectedDay}_${exIdx}`)) || 0;
+    if (currentExtra > 0) {
+      sessionStorage.setItem(`extra_sets_${selectedDay}_${exIdx}`, currentExtra - 1);
+      renderExercises();
+    }
   }
 
   function renderExercises() {
@@ -875,22 +1033,35 @@
       const card = document.createElement('div');
       card.className = 'card';
       
+      const extraSets = parseInt(sessionStorage.getItem(`extra_sets_${selectedDay}_${exIdx}`)) || 0;
+      const totalSetsForEx = ex.sets + extraSets;
+      const hasExtraSets = extraSets > 0;
+
       let setsHTML = `
-        <div class="set-labels">
+        <div class="set-labels ${hasExtraSets ? 'has-delete' : ''}">
           <span>Serie</span>
-          <span>Kg</span>
           <span>Reps</span>
+          <span>Kg</span>
           <span>Done</span>
+          ${hasExtraSets ? '<span></span>' : ''}
         </div>
       `;
-      for (let i = 1; i <= ex.sets; i++) {
+
+      for (let i = 1; i <= totalSetsForEx; i++) {
         const disabledAttr = isWorkoutActive ? '' : 'disabled';
+        const isExtra = i > ex.sets;
+
         setsHTML += `
-          <div class="set-row">
+          <div class="set-row ${hasExtraSets ? 'extra-set-row' : ''}">
             <span class="set-num">${i}</span>
-            <input type="number" step="0.5" placeholder="kg" class="input-field" id="input_w_${exIdx}_${i}" ${disabledAttr}>
             <input type="number" placeholder="${ex.reps}" class="input-field" id="input_r_${exIdx}_${i}" ${disabledAttr}>
+            <input type="number" step="0.5" placeholder="kg" class="input-field" id="input_w_${exIdx}_${i}" ${disabledAttr}>
             <button class="btn-check" id="btn_c_${exIdx}_${i}" onclick="saveSetRecord('${ex.exercise}', ${i}, '${exIdx}_${i}', ${ex.rest_sec})" ${disabledAttr}>✓</button>
+            ${hasExtraSets ? (isExtra ? `
+              <button class="btn-delete-set" onclick="removeExtraSet(${exIdx})" title="Eliminar serie">
+                <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+              </button>
+            ` : '<span></span>') : ''}
           </div>
         `;
       }
@@ -898,23 +1069,30 @@
       card.innerHTML = `
         <div class="card-header">
           <div class="exercise-title">${ex.exercise}</div>
-          <div class="exercise-subtitle">${ex.muscle} • ${ex.sets} series x ${ex.reps} reps</div>
+          <div class="exercise-subtitle">${ex.muscle} • ${totalSetsForEx} series x ${ex.reps} reps</div>
           <div class="last-performance" id="last_perf_${exIdx}">Cargando récord previo...</div>
         </div>
         ${setsHTML}
+        <button class="btn-add-set" onclick="addExtraSet(${exIdx})">
+          <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+        </button>
       `;
       list.appendChild(card);
       fetchLastPerformance(ex.exercise, `last_perf_${exIdx}`);
     });
+
+    restoreFormState();
   }
 
   function saveSetRecord(exerciseName, setNum, inputIdSuffix, restSec) {
     if (!isWorkoutActive) return;
 
-    const w = document.getElementById(`input_w_${inputIdSuffix}`).value;
     const r = document.getElementById(`input_r_${inputIdSuffix}`).value;
+    const w = document.getElementById(`input_w_${inputIdSuffix}`).value;
     const btn = document.getElementById(`btn_c_${inputIdSuffix}`);
     btn.classList.toggle('done');
+
+    sessionStorage.setItem(`form_state_btn_${btn.id}`, btn.classList.contains('done') ? 'done' : '');
 
     if (navigator.vibrate) navigator.vibrate(50);
     
@@ -949,7 +1127,7 @@
       if (res && res.length > 0) {
         res.sort((a,b) => b.timestamp - a.timestamp);
         const last = res[0];
-        el.textContent = `Última vez (${last.date}): ${last.weight}kg × ${last.reps} reps`;
+        el.textContent = `Última vez (${last.date}): ${last.reps} reps × ${last.weight}kg`;
       } else {
         el.textContent = `Sin registros previos`;
       }
@@ -993,7 +1171,7 @@
   }
 
   function deleteHistoryRecord(dateToDelete) {
-    if (!confirm(`¿Eliminar el historial del ${dateToDelete}?`)) return;
+    if (!confirm(`¿Eliminar el registro del ${dateToDelete}?`)) return;
 
     const tx = db.transaction(["workouts", "sessions"], "readwrite");
     const workoutsStore = tx.objectStore("workouts");
@@ -1018,6 +1196,68 @@
     };
 
     tx.oncomplete = () => { loadHistory(); };
+  }
+
+  function openEditModal(dateToEdit) {
+    editingDate = dateToEdit;
+    const container = document.getElementById('edit-modal-fields');
+    document.getElementById('edit-modal-subtitle').textContent = `Fecha: ${dateToEdit}`;
+    container.innerHTML = 'Cargando series...';
+
+    const tx = db.transaction("workouts", "readonly");
+    const req = tx.objectStore("workouts").getAll();
+
+    req.onsuccess = () => {
+      const records = req.result.filter(r => r.date === dateToEdit);
+      if (records.length === 0) {
+        container.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">No hay series registradas para esta fecha.</div>';
+      } else {
+        container.innerHTML = '';
+        records.forEach(r => {
+          const row = document.createElement('div');
+          row.style.cssText = 'margin-bottom:10px; padding:8px; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);';
+          row.innerHTML = `
+            <div style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:4px;">${r.exercise} (Serie ${r.set})</div>
+            <div style="display:flex; gap:8px;">
+              <input type="number" class="form-control" value="${r.reps}" id="edit_r_${r.id}" placeholder="Reps" style="padding:6px; font-size:12px;">
+              <input type="number" step="0.5" class="form-control" value="${r.weight}" id="edit_w_${r.id}" placeholder="Kg" style="padding:6px; font-size:12px;">
+            </div>
+          `;
+          container.appendChild(row);
+        });
+      }
+      document.getElementById('edit-history-modal').classList.remove('hidden');
+    };
+  }
+
+  function closeEditModal() {
+    document.getElementById('edit-history-modal').classList.add('hidden');
+    editingDate = null;
+  }
+
+  function saveEditedRecord() {
+    if (!editingDate) return;
+    const tx = db.transaction("workouts", "readwrite");
+    const store = tx.objectStore("workouts");
+
+    const req = store.getAll();
+    req.onsuccess = () => {
+      const records = req.result.filter(r => r.date === editingDate);
+      records.forEach(r => {
+        const wInput = document.getElementById(`edit_w_${r.id}`);
+        const rInput = document.getElementById(`edit_r_${r.id}`);
+        if (wInput && rInput) {
+          r.weight = parseFloat(wInput.value) || 0;
+          r.reps = parseInt(rInput.value) || 0;
+          store.put(r);
+        }
+      });
+    };
+
+    tx.oncomplete = () => {
+      closeEditModal();
+      loadHistory();
+    };
   }
 
   function loadHistory() {
@@ -1085,7 +1325,7 @@
           
           let setChips = exSummary[ex].map(s => `
             <div class="history-set-chip">
-              S${s.set}: <strong>${s.weight}kg</strong> × ${s.reps}
+              S${s.set}: ${s.reps} reps × <strong>${s.weight}kg</strong>
             </div>
           `).join('');
 
@@ -1102,47 +1342,25 @@
         const dayName = items.length > 0 ? items[0].day : '';
         const totalFormatted = totalSecs > 0 ? formatDuration(totalSecs) : '0s';
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'swipe-container';
-        wrapper.innerHTML = `
-          <div class="swipe-bg" onclick="deleteHistoryRecord('${d}')">
-            <span class="material-symbols-outlined">delete</span>
-          </div>
-          <div class="swipe-content" id="swipe-${d}">
-            <div class="history-header">
-              <div class="history-date">${d}</div>
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+          <div class="history-header">
+            <div class="history-date">${d}</div>
+            <div class="history-right-actions">
               <div class="history-total-time">Duración: ${totalFormatted}</div>
+              <button class="history-action-btn" onclick="openEditModal('${d}')" title="Editar">
+                <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+              </button>
+              <button class="history-action-btn delete-btn" onclick="deleteHistoryRecord('${d}')" title="Eliminar">
+                <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+              </button>
             </div>
-            ${dayName ? `<div class="history-day">${dayName}</div>` : ''}
-            <div>${summaryHTML}</div>
           </div>
+          ${dayName ? `<div class="history-day">${dayName}</div>` : ''}
+          <div>${summaryHTML}</div>
         `;
-        container.appendChild(wrapper);
-
-        const swipeContent = wrapper.querySelector('.swipe-content');
-        let startX = 0;
-        let currentX = 0;
-
-        swipeContent.addEventListener('touchstart', (e) => {
-          startX = e.touches[0].clientX;
-        }, { passive: true });
-
-        swipeContent.addEventListener('touchmove', (e) => {
-          currentX = e.touches[0].clientX;
-          let diff = currentX - startX;
-          if (diff < 0 && diff > -100) {
-            swipeContent.style.transform = `translateX(${diff}px)`;
-          }
-        }, { passive: true });
-
-        swipeContent.addEventListener('touchend', () => {
-          let diff = currentX - startX;
-          if (diff < -50) {
-            swipeContent.style.transform = `translateX(-70px)`;
-          } else {
-            swipeContent.style.transform = `translateX(0px)`;
-          }
-        });
+        container.appendChild(card);
       });
     }
   }
@@ -1159,7 +1377,7 @@
       const setEx = new Set(all.map(w => w.exercise));
       DB_ROUTINE.forEach(r => setEx.add(r.exercise));
 
-      select.innerHTML = '<option value="">-- Selecciona un ejercicio --</option>';
+      select.innerHTML = '<option value="">-- Ejercicio --</option>';
       Array.from(setEx).sort().forEach(ex => {
         const opt = document.createElement('option');
         opt.value = ex;
@@ -1201,7 +1419,7 @@
         html += `
           <div style="background: var(--bg-color); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color);">
             <span style="font-size: 13px; color: var(--text-muted);">${date}</span>
-            <span style="font-size: 14px; font-weight: 700; color: var(--accent-blue);">${r.weight} kg × ${r.reps} reps</span>
+            <span style="font-size: 14px; font-weight: 700; color: var(--accent-blue);">${r.reps} reps × ${r.weight} kg</span>
           </div>
         `;
       });
